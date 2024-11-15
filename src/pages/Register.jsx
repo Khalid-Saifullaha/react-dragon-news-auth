@@ -1,68 +1,98 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../provider/AuthProvider";
 
 const Register = () => {
+  const { createNewUser, setUser } = useContext(AuthContext);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // get from data
+    const form = new FormData(e.target);
+    const name = form.get("name");
+    const email = form.get("email");
+    const photo = form.get("photo");
+    const password = form.get("password");
+    console.log(name, email, photo, password);
+
+    createNewUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
   return (
     <div className=" flex justify-center my-10">
-      <div class="card bg-base-100 w-full max-w-lg shrink-0 rounded-none p-10">
+      <div className="card bg-base-100 w-full max-w-lg shrink-0 rounded-none p-10">
         <h2 className="text-2xl font-semibold text-center">
           Register your account
         </h2>
-        <form class="card-body">
+        <form onSubmit={handleSubmit} className="card-body">
           {/* name input */}
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Your Name</span>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Your Name</span>
             </label>
             <input
+              name="name"
               type="text"
               placeholder="Enter your name"
-              class="input input-bordered"
+              className="input input-bordered"
               required
             />
           </div>
           {/* Photo  */}
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Photo URL</span>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Photo URL</span>
             </label>
             <input
+              name="photo"
               type="text"
               placeholder="Photo-URL"
-              class="input input-bordered"
+              className="input input-bordered"
               required
             />
           </div>
           {/* email input */}
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Email</span>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Email</span>
             </label>
             <input
+              name="email"
               type="email"
               placeholder="email"
-              class="input input-bordered"
+              className="input input-bordered"
               required
             />
           </div>
           {/* password input */}
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Password</span>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Password</span>
             </label>
             <input
+              name="password"
               type="password"
               placeholder="password"
-              class="input input-bordered"
+              className="input input-bordered"
               required
             />
-            <label class="label">
-              <a href="#" class="label-text-alt link link-hover">
+            <label className="label">
+              <a href="#" className="label-text-alt link link-hover">
                 Forgot password?
               </a>
             </label>
           </div>
-          <div class="form-control mt-6">
-            <button class="btn btn-neutral rounded-none">Register</button>
+          <div className="form-control mt-6">
+            <button className="btn btn-neutral rounded-none">Register</button>
           </div>
         </form>
         <p className="text-center font-semibold">
